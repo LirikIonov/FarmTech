@@ -1,0 +1,1 @@
+Simple cow farm CLI-application with MVC arhitecture that supports adding new cows and its deletion. 
