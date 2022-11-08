@@ -11,4 +11,17 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
+
+    <build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.6.0</version>
+            <configuration>
+                <mainClass>com.farm.cow.breeding.FarmRunner</mainClass>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 </project>

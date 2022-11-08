@@ -23,12 +23,12 @@ public class ArgumentsValidator {
         return true;
     }
 
-    public boolean isAllSymbolsAreAlphabetic(String input, IOController ioController) {
+    public boolean isAllSymbolsAreAlphabeticOrDigit(String input, IOController ioController) {
         for (int pos = 0, len = input.length(); pos < len; pos++) {
             char symbol = input.charAt(pos);
-            if (!Character.isAlphabetic(symbol)) {
+            if (!Character.isAlphabetic(symbol) && !Character.isDigit(symbol)) {
                 ioController.println("Symbol " + symbol + " on position = " + pos +
-                        " is not allowed");
+                        " is not allowed. String (" + input + ")");
                 return false;
             }
         }

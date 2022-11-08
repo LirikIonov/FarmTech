@@ -1,6 +1,7 @@
 package com.farm.cow.breeding.service.impl;
 
 import com.farm.cow.breeding.collection.CowsCollection;
+import com.farm.cow.breeding.collection.impl.CowsCollectionImpl;
 import com.farm.cow.breeding.collection.impl.CowsMap;
 import com.farm.cow.breeding.dto.CowDTO;
 import com.farm.cow.breeding.service.CowLifeService;
@@ -8,7 +9,7 @@ import com.farm.cow.breeding.service.CowLifeService;
 import java.math.BigInteger;
 
 public class CowLifeServiceImpl implements CowLifeService {
-    CowsCollection cowsCollection = new CowsMap();
+    CowsCollection cowsCollection = new CowsCollectionImpl();
     BigInteger specialCow = BigInteger.ONE.negate();
 
     @Override

@@ -36,15 +36,16 @@ public class FarmController {
 
     private void endLifeSpan(String input) {
         String trimmedInput = input.substring(1).trim();
-        argValidator.isAllSymbolsAreDigit(trimmedInput, false, ioController);
+        boolean argParsed = argValidator.isAllSymbolsAreDigit(trimmedInput, false, ioController);
 
-        BigInteger digitId = new BigInteger(trimmedInput);
-        try {
-            cowLifeService.removeCow(digitId);
-            ioController.println("Cow with id = " + digitId + " was removed from the farm");
-        } catch (RuntimeException e) {
-            ioController.println(e.getMessage());
-            e.printStackTrace();
+        if (argParsed) {
+            BigInteger digitId = new BigInteger(trimmedInput);
+            try {
+                cowLifeService.removeCow(digitId);
+                ioController.println("Cow with id = " + digitId + " was removed from the farm");
+            } catch (RuntimeException e) {
+                ioController.println(e.getMessage());
+            }
         }
     }
 
@@ -59,48 +60,52 @@ public class FarmController {
         }
 
         String parentCowId = substringUntilFirstWhiteSpace(name);
-        argValidator.isAllSymbolsAreDigit(parentCowId, false, ioController);
+        boolean firstParsed = argValidator.isAllSymbolsAreDigit(parentCowId,
+                false, ioController);
         name = name.substring(parentCowId.length() + 1);
 
         String childCowId = substringUntilFirstWhiteSpace(name);
-        argValidator.isAllSymbolsAreDigit(childCowId, false, ioController);
+        boolean secondParsed = argValidator.isAllSymbolsAreDigit(childCowId, false, ioController);
 
         name = name.substring(childCowId.length() + 1);
-        argValidator.isAllSymbolsAreAlphabetic(name, ioController);
+        boolean thirdParsed = argValidator.isAllSymbolsAreAlphabeticOrDigit(name, ioController);
 
-        try {
-            cowLifeService.addCow(new BigInteger(parentCowId), new BigInteger(childCowId), name);
-            ioController.println("Cow with parentId = " + parentCowId + ", id = " + childCowId +
-                    ", name = " + name + " was added to the farm");
-        } catch (RuntimeException e) {
-            ioController.println(e.getMessage());
-            e.printStackTrace();
+        if (firstParsed && secondParsed && thirdParsed) {
+            try {
+                cowLifeService.addCow(new BigInteger(parentCowId), new BigInteger(childCowId), name);
+                ioController.println("Cow with parentId = " + parentCowId + ", id = " + childCowId +
+                        ", name = " + name + " was added to the farm");
+            } catch (RuntimeException e) {
+                ioController.println(e.getMessage());
+            }
         }
     }
 
     private void initFarm(String input) {
-        argValidator.isAllSymbolsAreDigit(input, false, ioController);
+        boolean argParsed = argValidator.isAllSymbolsAreDigit(input, false, ioController);
 
-        int cowsCount = cowLifeService.getCowsCount();
-        String message = "Farm is created. It consists of one cow with id = 0, parentId = -1, name = First Cow";
-        if (cowsCount != 0) {
-            message = "Farm is already created, if you want to reinitialize it, please restart the application";
+        if (argParsed) {
+            int cowsCount = cowLifeService.getCowsCount();
+            String message = "Farm is created. It consists of one cow with id = 0, parentId = -1, name = First Cow";
+            if (cowsCount != 0) {
+                message = "Farm is already created, if you want to reinitialize it, please restart the application";
+            } else {
+                BigInteger id = BigInteger.ZERO;
+                BigInteger parentId = BigInteger.ONE.negate();
+                String name = "First Cow";
+                cowLifeService.addCow(parentId, id, name);
+            }
+
+            ioController.println(message);
         }
-
-        else {
-            BigInteger id = BigInteger.ZERO;
-            BigInteger parentId = BigInteger.ONE.negate();
-            String name = "First Cow";
-            cowLifeService.addCow(parentId, id, name);
-        }
-
-        ioController.println(message);
     }
 
     private void printFarmData(String input) {
-        argValidator.isAllSymbolsAreDigit(input, false, ioController);
-        String data = cowLifeService.getFarmData();
-        ioController.println(data);
+        boolean argParsed = argValidator.isAllSymbolsAreDigit(input, false, ioController);
+        if (argParsed) {
+            String data = cowLifeService.getFarmData();
+            ioController.println(data);
+        }
     }
 
     private boolean validateInputFromCLI(String input) {
